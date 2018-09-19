@@ -1,0 +1,103 @@
+<div class="container">
+    <br/>
+  <div class="jumbotron">
+      <div align="center">
+          <div id="spoon"></div>  
+          <div id="knife"></div>  
+          <div id="fork"></div>  
+      </div>
+      <div class="center">
+          <h1 class="alex-brush">Welcome</h1>
+          <h2>Wilkes & McHugh</h2>
+          <span id="asterisk"><b>*</b></span>
+          <p>reservation application</p>
+      </div>
+  </div>
+  
+  <div class="panel-body">
+    <h6>Please tell us a little about your restaurant:</h6>
+    <mat-horizontal-stepper>
+        <mat-step [completed]="false">
+            <ng-template matStepLabel>Company Name</ng-template>
+            <div>
+                <div>Restaurant Name:</div><input  class="form-control" type="text" [(ngModel)]="companyName" />
+                <hr />
+            </div>
+            <div>
+                <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        
+        <mat-step [completed]="false">
+            <ng-template matStepLabel>Business Hours</ng-template>
+            <div>
+                <label for="openingLabel" class="">Open:</label>
+                <kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [value]="startTime"></kendo-timepicker><br />
+                <label for="closingLabel">Close:</label>
+                <kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [value]="endTime"></kendo-timepicker>
+                <hr />
+            </div>
+            <div>
+                <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
+                <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+          
+        <mat-step [completed]="false">
+            <ng-template matStepLabel>Table Setup</ng-template>
+            <div>
+                Please list how many people can sit at each table and how many tables you have:
+                    <table class="table">
+                    <thead>
+                            <th scope="col">Table Max Capacity</th>
+                            <th scope="col"># of Tables</th>
+                            <th scope="col">Remove Tables</th>
+                        </thead>
+                        <tbody>
+                    <tr *ngFor="let tables of tableList; let index = index;">
+                            <td>
+                                <i class="fa fa-male"></i>: {{tables.MaxCapacity}}
+                            </td>
+                            <td>
+                                    <i class="fa fa-plus" (click)="addToTable(tables,1)" ></i>&nbsp;{{tables.Quantity}}&nbsp; <i class="fa fa-minus" (click)="addToTable(tables,-1)" ></i>
+                            </td>
+                            <td>
+                                    <button type="button" class="btn btn-warning" (click)="deleteTable(tables)">Delete</button>
+                                    
+                            </td>
+                    </tr>
+                    <tr>
+                        <td>
+                                How many <i class="fa fa-male"></i> can this table sit? <input  class="form-control" type="number" id="addCapacity" [(ngModel)]="addCapacity"/>
+                        </td>
+                        <td>
+                                How many of these tables do you have? <input  class="form-control" type="number" id="addQuantity" [(ngModel)]="addQuantity"/>
+                        </td>
+                        <td>
+                            Add more tables<br/><button type="button" class="btn btn-success" (click)="addTables(addCapacity,addQuantity)">Add another set</button>
+                        </td>
+                    </tr>
+            </tbody>
+                </table>
+                <hr />
+            </div>
+            <div>
+            <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
+            <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+          
+        <mat-step [completed]="false">
+            <ng-template matStepLabel>Cheers!</ng-template>
+            <h1>Lets get started!</h1>
+            
+            <button type="button" class="btn btn-success" (click)="storeToLocalStorage()">Save</button>
+            <hr />
+            <div>
+            <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+    
+  </div>
+</div>

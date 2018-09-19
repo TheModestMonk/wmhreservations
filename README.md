@@ -1,5 +1,7 @@
 # WmhReservations
 
+Testing building a reservation app built in Angular 6 and hosted on AWS!
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
 
 ## Development server

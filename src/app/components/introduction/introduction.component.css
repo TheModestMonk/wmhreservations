@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css?family=Alex+Brush');
+label{
+  width: 45px;
+}
+
+.center {
+    line-height: 0;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+    max-width: 450px;
+  }
+  .center h1 {
+    font-family: 'Alex Brush', cursive !important;
+    color: #be8040;
+    font-size: 80px;
+  }
+  .center h2 {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 28px;
+  }
+  .center #asterisk {
+    color: #be8040;
+    line-height: 0.5;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .center #asterisk:before, .center #asterisk:after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    height: 1px;
+    width: 0%;
+    opacity: 0;
+    background: #fff;
+  }
+  .center #asterisk:before {
+    margin-right: 10px;
+  }
+  .center #asterisk:after {
+    margin-left: 10px;
+  }
+  .center p {
+    text-transform: uppercase;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+  }
+/* Silverware */
+#spoon, #knife, #fork {
+  display:inline-block;
+  margin-top:12vh;
+  margin-right:5vw;
+  margin-left:5vw;
+}
+
+#spoon {
+  transform:rotate(30deg);
+  border:10px solid transparent;
+  border-bottom:90px solid #fff;
+  background:#fff;
+  width:0px;
+  border-radius:10px;
+  border-bottom-left-radius:15px 30px;
+  border-bottom-right-radius:15px 30px;
+  border-top-left-radius:15px 150px;
+  border-top-right-radius:15px 150px;
+}
+
+#spoon:after {
+  content:'';
+  position:absolute;
+  top:-80px;
+  left:-31px;
+  width:60px;
+  height:80px;
+  border-radius:50%;
+  background:#fff;
+}
+
+
+
+
+
+
+#knife {
+  transform:rotate(30deg);
+  border:10px solid transparent;
+  border-bottom:100px solid #fff;
+  background:#fff;
+  width:0px;
+  border-radius:10px;
+  border-bottom-left-radius:15px 30px;
+  border-bottom-right-radius:15px 30px;
+  border-top-left-radius:15px 150px;
+  border-top-right-radius:15px 150px;
+}
+
+#knife:after {
+  content:'';
+  position:absolute;
+  top:-80px;
+  left:-18px;
+  width:26px;
+  height:100px;
+  border-top-right-radius:15px;
+  border-bottom-right-radius:0px;
+  border-top-left-radius:50px 150px;
+  border-bottom-left-radius:10px;
+  background:#fff;
+}
+
+
+
+
+
+
+#fork {
+  transform:rotate(30deg);
+  border:10px solid transparent;
+  border-bottom:105px solid #fff;
+  background:#fff;
+  width:0px;
+  border-radius:10px;
+  border-bottom-left-radius:15px 30px;
+  border-bottom-right-radius:15px 30px;
+  border-top-left-radius:15px 150px;
+  border-top-right-radius:15px 150px;
+}
+
+#fork:after {
+  content:'';
+  position:absolute;
+  top:-70px;
+  left:-20px;
+  width:8px;
+  height:60px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:10px 0px #fff,20px 0px #fff,30px 0px #fff;
+}
+
+
+#fork:before {
+  content:'';
+  position:absolute;
+  top:-35px;
+  left:-18px;
+  width:35px;
+  height:40px;
+  border-radius:0% 0% 50% 50%;
+  background:#fff;
+}
+/* Animations */
+#asterisk {
+    opacity: 0;
+    transform-origin:50% 4%;
+    animation: spin 0.5s forwards;
+    animation-delay: 0.3s;
+  }
+  #asterisk::before, #asterisk::after {
+    transform-origin: center center;
+    animation: grow 0.5s forwards;
+    animation-delay: 0.8s;
+  }
+  .center p {
+    transform: translateY(-40px);
+    opacity: 0;
+    animation: fadeDown 0.9s forwards;
+    animation-delay: 1.3s;
+  }
+  .center h2 {
+    transform: scale(2);
+    opacity: 0;
+    animation: fade 0.5s forwards;
+  }
+  .center h1 {
+    transform: translateY(40px);
+    opacity: 0;
+    animation: fadeUp 0.5s forwards;
+    animation-delay: 0.3s;
+  }
+  @keyframes fadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade {
+    0% {
+      transform: scale(2);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes fadeDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes grow {
+    0% {
+      opacity: 0;
+      width: 0%;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+      width: 40%;
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0);
+      opacity: 0;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 1;
+    }
+  }
