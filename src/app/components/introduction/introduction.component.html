@@ -15,36 +15,43 @@
   </div>
   
   <div class="panel-body">
-    <h6>Please tell us a little about your restaurant:</h6>
+    <h6>Thank you for using the reservation application. Please tell us a little about your restaurant:</h6>
     <mat-horizontal-stepper>
         <mat-step [completed]="false">
-            <ng-template matStepLabel>Company Name</ng-template>
+            <ng-template matStepLabel><span class="titleIntro">Company Name</span></ng-template>
             <div>
-                <div>Restaurant Name:</div><input  class="form-control" type="text" [(ngModel)]="companyName" />
-                <hr />
+                <input placeholder="Restaurant Name" class="form-control" type="text" [(ngModel)]="companyName" />
+                <br/>
             </div>
             <div>
+                <br/>
                 <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
             </div>
         </mat-step>
         
         <mat-step [completed]="false">
-            <ng-template matStepLabel>Business Hours</ng-template>
+            <ng-template matStepLabel><span class="titleIntro">Business Hours</span></ng-template>
             <div>
-                <label for="openingLabel" class="">Open:</label>
-                <kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [value]="startTime"></kendo-timepicker><br />
-                <label for="closingLabel">Close:</label>
-                <kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [value]="endTime"></kendo-timepicker>
-                <hr />
+                <table>
+                    <tr>
+                            <td><label for="openingLabel" class="">Open:</label></td>
+                            <td><kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [(value)]="startTime"></kendo-timepicker><br /></td>
+                    </tr>
+                    <tr>
+                            <td><label for="closingLabel">Close:</label></td>
+                            <td><kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [(value)]="endTime"></kendo-timepicker></td>
+                    </tr>
+                </table>
             </div>
             <div>
+                <br/>
                 <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
                 <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
             </div>
         </mat-step>
           
         <mat-step [completed]="false">
-            <ng-template matStepLabel>Table Setup</ng-template>
+            <ng-template matStepLabel><span class="titleIntro">Table Setup</span></ng-template>
             <div>
                 Please list how many people can sit at each table and how many tables you have:
                     <table class="table">
@@ -56,13 +63,13 @@
                         <tbody>
                     <tr *ngFor="let tables of tableList; let index = index;">
                             <td>
-                                <i class="fa fa-male"></i>: {{tables.MaxCapacity}}
+                                <i class="fa fa-2x fa-male"></i> x {{tables.MaxCapacity}}
                             </td>
                             <td>
                                     <i class="fa fa-plus" (click)="addToTable(tables,1)" ></i>&nbsp;{{tables.Quantity}}&nbsp; <i class="fa fa-minus" (click)="addToTable(tables,-1)" ></i>
                             </td>
                             <td>
-                                    <button type="button" class="btn btn-warning" (click)="deleteTable(tables)">Delete</button>
+                                    <button type="button" class="btn-secondary" (click)="deleteTable(tables)">Delete</button>
                                     
                             </td>
                     </tr>
@@ -74,7 +81,7 @@
                                 How many of these tables do you have? <input  class="form-control" type="number" id="addQuantity" [(ngModel)]="addQuantity"/>
                         </td>
                         <td>
-                            Add more tables<br/><button type="button" class="btn btn-success" (click)="addTables(addCapacity,addQuantity)">Add another set</button>
+                            Add more tables<br/><button type="button" class="btn btn-primary" (click)="addTables(addCapacity,addQuantity)">Add another set</button>
                         </td>
                     </tr>
             </tbody>
@@ -82,19 +89,31 @@
                 <hr />
             </div>
             <div>
-            <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
-            <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
+                <br/>
+                <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
+                <button class="btn btn-primary" mat-button mat-raised-button matStepperNext>Next</button>
             </div>
         </mat-step>
           
         <mat-step [completed]="false">
-            <ng-template matStepLabel>Cheers!</ng-template>
-            <h1>Lets get started!</h1>
-            
-            <button type="button" class="btn btn-success" (click)="storeToLocalStorage()">Save</button>
-            <hr />
+            <ng-template matStepLabel><span class="titleIntro">Cheers!</span></ng-template>
+            <div *ngIf="companyName && startTime && endTime && tableList.length > 0">
+                <h2 style="text-align: center">Great! Looks like we have everything we need.</h2>
+                
+                <button type="button" class="btn btn-primary" (click)="storeToLocalStorage()">Let's start booking tables!</button>
+            </div>
+            <div *ngIf="!companyName">
+                Please enter a name for your company under <em>Company Name</em>.
+            </div>
+            <div *ngIf="!startTime || !endTime">
+                Please enter a value start and end time under <em>Business Hours</em>.
+            </div>
+            <div *ngIf="tableList.length === 0">
+                Please make sure you have tables setup under <em>Table Setup</em>.
+            </div>
             <div>
-            <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
+                <br/>
+                <button class="btn btn-secondary" mat-button mat-raised-button matStepperPrevious>Back</button>
             </div>
         </mat-step>
     </mat-horizontal-stepper>

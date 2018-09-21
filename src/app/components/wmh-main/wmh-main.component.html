@@ -1,3 +1,115 @@
-<div class="center">
-    {{companyInfo.companyName}}
+<div class="center" style="width:90%">
+    <div class="center">
+        <h1 class="alex-brush">{{companyInfo.companyName}}</h1>
+        <span id="asterisk"><b>*</b></span>
+        <p>Online reservations</p>
+    </div>
 </div>
+<div class="container">
+        
+        <kendo-datepicker [(value)]="search.ReservationTime"  class="kendo-picker" (input)="filterReservations()"></kendo-datepicker>
+        
+        <kendo-timepicker [(value)]="search.ReservationTime" [format]="'hh:mm a'" [steps]="steps" [min]="companyOpenTime" [max]="companyCloseTime" class="kendo-picker" (input)="filterReservations()" ></kendo-timepicker>
+
+        <kendo-textbox-container floatingLabel="Name">
+            <input kendoTextBox [(ngModel)]="search.Name" (input)="filterReservations()" />
+        </kendo-textbox-container> 
+        
+        <kendo-textbox-container floatingLabel="Size of Party">
+        <kendo-numerictextbox [(ngModel)]="search.PartySize" [min]="0" [max]="companyMaxTableSize" format="n0" (input)="filterReservations()" ></kendo-numerictextbox>
+        </kendo-textbox-container> &nbsp;
+
+        <mat-checkbox class="example-margin" [(ngModel)]="search.ArrivedFlag" (input)="filterReservations()" title="Show reservations that have already arrived"></mat-checkbox>&nbsp;
+        <i class="fa fa-2x fa-book" aria-hidden="true" (click)="open();getNextReservation();" title="Book a reservation" ></i>&nbsp;
+        <i class="fa fa-2x fa-undo" aria-hidden="true" (click)="resetFilter()" title="Reset search"></i>
+
+
+</div>
+<div>
+
+  <div class="jumbotron">
+  <table class="table" *ngIf="filteredResList.length > 0">
+    <tr class="row">
+      <th class="col col-3" style="text-align: right;"><em>Reservation Name</em></th>
+      <th class="col col-1"><em>Party Size</em></th>
+      <th class="col col-1"><em>Time</em></th>
+      <th class="col col-1"><em>Table Size</em></th>
+      <th class="col col-1"><em>Table #</em></th>
+      <th class="col col-2"><em>Date</em></th>
+      <th class="col col-1"><em>Arrived</em></th>
+      <th class="col col-2"><em>Delete</em></th>
+    </tr>
+    <tr class="row" *ngFor="let res of filteredResList">
+        <td class="col col-3" style="text-align: right;">
+          <h3><strong>{{res.PartyName}}</strong> </h3>
+          
+        </td>
+        <td class="col col-1">
+            {{res.ReservationSize}} x <i class="fa fa-male"></i>
+        </td>
+        <td class="col col-1">
+          <h4>{{res.ReservationDtm | date:'shortTime'}}</h4>
+        </td>
+        <td class="col col-1">
+          {{res.TableSize}} seater 
+        </td>
+        <td class="col col-1">
+          # {{res.TableNumber}}
+        </td>
+        <td class="col col-2">
+          {{res.ReservationDtm| date:'fullDate'}}
+        </td>
+        <td class="col col-1">
+              <mat-checkbox class="example-margin" [(ngModel)]="res.ArrivedFlag" (click)="updateReservation(res)" title="Mark as arrived"></mat-checkbox>
+        </td>
+        <td class="col col-2">
+          <i class="fa fa-trash" aria-hidden="true" (click)="cancelReservation(res)" title="Book a reservation" ></i>
+        </td>
+    </tr>
+  </table>
+  <div *ngIf="filteredResList.length === 0">
+      <p style="text-align: center">No reservations found. To add a reservation, click the <i class="fa fa-book" aria-hidden="true" (click)="open();getNextReservation();" title="Book a reservation" ></i> above.</p>
+  </div>
+    </div>
+</div>
+
+        <kendo-dialog title="Booking a reservation" *ngIf="dialogOpened" (close)="close()" >
+            
+        <kendo-datepicker [(value)]="newRez.ReservationTime" class="kendo-picker"></kendo-datepicker>
+        
+        <kendo-timepicker [(value)]="newRez.ReservationTime" [format]="'hh:mm a'" [steps]="steps" [min]="companyOpenTime" [max]="companyCloseTime" class="kendo-picker" ></kendo-timepicker>
+
+        <kendo-textbox-container floatingLabel="Name">
+            <input kendoTextBox [(ngModel)]="newRez.Name" />
+        </kendo-textbox-container> 
+        
+        <kendo-textbox-container floatingLabel="Size of Party">
+        <kendo-numerictextbox [(ngModel)]="newRez.PartySize" [min]="0" [max]="companyMaxTableSize" format="n0" ></kendo-numerictextbox></kendo-textbox-container>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="searchByDateAndSize()" [disabled]="!newRez.ReservationTime || !newRez.PartySize">Search</button>
+        <br />
+        <div *ngIf="bookedDateTime !== newRez.ReservationTime && !moreInfoFlag">
+          <div>We found you the next available table!</div>
+        </div>
+        <div *ngIf="moreInfoFlag">
+          <div>*Please make sure you have a date, time, and party size selected.</div>
+        </div>
+        <br />
+        <div *ngIf="bookedTable"> <strong>{{bookedDateTime | date:'shortTime'}}
+        <em>{{bookedDateTime | date:'fullDate'}}</em></strong>
+        <div *ngIf="missingNameFlag" class="warning">
+          *Please enter a name before booking
+        </div>
+        <br />
+         <div>
+            <button type="button" class="btn btn-secondary" (click)="close()">No</button>
+            <button type="button" class="btn btn-primary" (click)="addReservation(); close();" 
+            [disabled]="!newRez.Name || newRez.Name.length === 0 || !newRez.ReservationTime">
+            Book it!</button>
+         </div>
+        </div>
+         &nbsp;
+        </kendo-dialog>
+<div class="footer" id="footer">
+    <span id="asterisk"><b>{{companyInfo.companyName}} © 2018</b></span>
+</div>
+

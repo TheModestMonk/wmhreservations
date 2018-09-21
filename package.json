@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "6.1.7",
     "@angular/router": "6.1.7",
     "@progress/kendo-angular-dateinputs": "^3.4.4",
+    "@progress/kendo-angular-dialog": "^3.7.0",
     "@progress/kendo-angular-inputs": "^3.2.1",
     "@progress/kendo-angular-intl": "^1.4.0",
     "@progress/kendo-angular-l10n": "^1.1.0",
@@ -39,7 +40,8 @@
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.0.0",
     "web-animations-js": "^2.3.1",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "@progress/kendo-angular-buttons": "^4.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",

@@ -1,3 +1,193 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /* @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"; */
+@import url('https://fonts.googleapis.com/css?family=Alex+Brush');
+
+selectorTab {
+  color: aliceblue !important;
+  
+}
+.center {
+    line-height: 0;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+  }
+  .center h1 {
+    font-family: 'Alex Brush', cursive !important;
+    color: #be8040;
+    font-size: 80px;
+  }
+  .center h2 {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 28px;
+  }
+  .center #asterisk {
+    color: #be8040;
+    line-height: 0.5;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .center #asterisk:before, .center #asterisk:after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    height: 1px;
+    width: 0%;
+    opacity: 0;
+    background: #fff;
+  }
+  .center #asterisk:before {
+    margin-right: 10px;
+  }
+  .center #asterisk:after {
+    margin-left: 10px;
+  }
+  .center p {
+    text-transform: uppercase;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+  }
+i {
+  opacity: 1;
+
+}
+i:hover {
+  cursor: pointer;
+    opacity:.3;
+}
+
+  /* Animations */
+#asterisk {
+  opacity: 0;
+  transform-origin:50% 4%;
+  animation: spin 0.5s forwards;
+  animation-delay: 0.3s;
+}
+#asterisk::before, #asterisk::after {
+  transform-origin: center center;
+  animation: grow 0.5s forwards;
+  animation-delay: 0.8s;
+}
+.center p {
+  transform: translateY(-40px);
+  opacity: 0;
+  animation: fadeDown 0.9s forwards;
+  animation-delay: 1.3s;
+}
+.center h2 {
+  transform: scale(2);
+  opacity: 0;
+  animation: fade 0.5s forwards;
+}
+.center h1 {
+  transform: translateY(40px);
+  opacity: 0;
+  animation: fadeUp 0.5s forwards;
+  animation-delay: 0.3s;
+}
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  0% {
+    transform: scale(2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes grow {
+  0% {
+    opacity: 0;
+    width: 0%;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    width: 40%;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.center {
+    line-height: 0;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+  }
+  .center h1 {
+    font-family: 'Alex Brush', cursive !important;
+    color: #be8040;
+    font-size: 80px;
+  }
+  .center h2 {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 28px;
+  }
+  .center #asterisk {
+    color: #be8040;
+    line-height: 0.5;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .center #asterisk:before, .center #asterisk:after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    height: 1px;
+    width: 0%;
+    opacity: 0;
+    background: #fff;
+  }
+  .center #asterisk:before {
+    margin-right: 10px;
+  }
+  .center #asterisk:after {
+    margin-left: 10px;
+  }
+  .center p {
+    text-transform: uppercase;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+  }

@@ -9,20 +9,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./introduction.component.css']
 })
 export class IntroductionComponent implements OnInit {
-  public steps: any = { hour: 1, minute: 15 };
-  public startTime: Date = new Date(2000, 2, 10, 8, 0, 0);
-  public endTime: Date = new Date(2000, 2, 10, 22, 30, 0);
-  public companyName: string = '';
-  public tableList: TableSet[] = [];
+  steps: any = { hour: 1, minute: 15 };
+  startTime: Date = new Date(2000, 2, 10, 8, 0, 0);
+  endTime: Date = new Date(2000, 2, 10, 22, 30, 0);
+  companyName: string = '';
+  tableList: TableSet[] = [];
   isLinear = true;
   constructor(private localStorage: LocalStorageService, private router: Router) {
+  }
+
+  ngOnInit() {
     //Just some defaults to make it easier to test
     this.tableList.push(new TableSet(2,2));
     this.tableList.push(new TableSet(5,2));
     this.tableList.push(new TableSet(8,1));
-  }
-
-  ngOnInit() {
   }
   addToTable(ts:TableSet, numAdded: number) {
     ts.Quantity += numAdded;
@@ -52,7 +52,7 @@ export class IntroductionComponent implements OnInit {
     }
   }
   storeToLocalStorage(){
-    this.localStorage.storeOnLocalStorage(this.companyName, this.startTime, this.endTime, this.tableList);
+    this.localStorage.storeCompanyOnLocalStorage(this.companyName, this.startTime, this.endTime, this.tableList);
     this.router.navigate(['WmhMain']);
   }
 
