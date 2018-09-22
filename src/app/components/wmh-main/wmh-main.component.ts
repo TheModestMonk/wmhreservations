@@ -26,6 +26,9 @@ export class WmhMainComponent implements OnInit {
   bookedDateTime: Date = null;
   moreInfoFlag: boolean = true;
   missingNameFlag: boolean = true;
+  withinWorkingHours: boolean = true;
+  
+  reservationLength: number = 4; //Length in 15 minute intervals so 4 = 1 hour blocked reservation
   
 
   constructor(private localStorage: LocalStorageService, private router: Router) { 
@@ -39,6 +42,7 @@ export class WmhMainComponent implements OnInit {
     
     this.companyOpenTime = new Date(this.companyInfo["companyHourOpen"]);
     this.companyCloseTime = new Date(this.companyInfo["companyHourClose"]);
+    this.reservationLength = this.companyInfo["intervals"];
     this.todayDateTime = this.roundMinutes(this.todayDateTime); // 5:19-> 5:15
     this.search.ReservationTime = this.todayDateTime;
     this.search.ArrivedFlag = false;
@@ -61,7 +65,6 @@ export class WmhMainComponent implements OnInit {
     this.moreInfoFlag = true;
     this.missingNameFlag = false;
   }
-
   open() {
     this.dialogOpened = true;
   }
@@ -88,6 +91,29 @@ export class WmhMainComponent implements OnInit {
     this.search = {};
     this.search.ReservationTime = this.todayDateTime;
     this.filterReservations();
+  }
+  //Example 9am-5pm -> 6pm should fail
+  isWithinWorkingHours(timeToCheck : Date){
+    let minute = timeToCheck.getMinutes();//0
+    let hour = timeToCheck.getHours();//18
+    let openMinute = this.companyOpenTime.getMinutes();//0
+    let openHour = this.companyOpenTime.getHours();//9
+    let closeMinute = this.companyCloseTime.getMinutes();//0
+    let closeHour = this.companyCloseTime.getHours();//17
+
+    if (openHour > hour ){//9 > 18 - > false
+      return false;
+    }
+    else if (openHour === hour && openMinute > minute){
+      return false;
+    }
+    else if (closeHour < hour){//17 < 18 -> true
+      return false;
+    }
+    else if (closeHour === hour && closeMinute < minute){
+      return false;
+    }
+    return true;
   }
   getNextReservation(){
     this.newRez.ReservationTime = this.search.ReservationTime;
@@ -128,43 +154,59 @@ export class WmhMainComponent implements OnInit {
     });
     return emptyTable;
   }
-  searchByDateAndSize(){
-    if (this.newRez.PartySize == null || this.newRez.PartySize < 0){
+  searchByDateAndSize() : boolean{
+    if (this.newRez.PartySize == null || this.newRez.PartySize < 0 || this.newRez.PartySize > this.companyMaxTableSize){
       this.moreInfoFlag = true;
-      return;
+      return false;
     }
     this.moreInfoFlag = false;
 
     let lookingResTime : Date = new Date((this.newRez.ReservationTime as Date).setSeconds(0,0));
+    
+    if (!this.isWithinWorkingHours(lookingResTime))
+    {
+      this.withinWorkingHours = false;
+      return false;
+    }
+    this.withinWorkingHours = true;
     let tableFound : boolean = false;
     //Create a reservation that fits the closest available time request for the size they requested.
     let bestTableSize : number = this.findSmallestTable();
     let possibleTables : number = this.findTableSetBySize(bestTableSize);
     let tableFoundNum : number = 0;
 
-    
     if (this.reservationList === null || this.reservationList.length === 0)//First customer!
     {
       this.bookedTable = 1;
       this.bookedDateTime = lookingResTime;
       this.bookedSize = bestTableSize;
-      return;
+      return true;
     }
     while (!tableFound){
       for(let i = 1; i <= possibleTables; i++) {
         tableFound = this.tryToFillReservation(lookingResTime, bestTableSize, i);
-        if (tableFound){//Great! Now make sure that same table is open for the next hour
-          //Clean this up to make variable length (make it so you can change the amount each reservation lasts)
-          if (this.tryToFillReservation(new Date(lookingResTime.getTime() + 15*60000),bestTableSize, i))
+        if (tableFound){//Great! Now make sure that same table is open for the next times
+          for (let j = 1; j < this.reservationLength; j++)
           {
-            if (this.tryToFillReservation(new Date(lookingResTime.getTime() + 30*60000),bestTableSize, i))
+            if (!this.tryToFillReservation(new Date(lookingResTime.getTime() + j*15*60000),bestTableSize, i)) {
+              tableFound = false;
+              break;
+            }
+          }
+          if (tableFound)//Still a good table, check previous reservations
+          {
+            for (let j = 1; j < this.reservationLength; j++)
             {
-              if (this.tryToFillReservation(new Date(lookingResTime.getTime() + 45*60000),bestTableSize, i))
-              {
-                tableFoundNum = i;
+              if (!this.tryToFillReservation(new Date(lookingResTime.getTime() - j*15*60000),bestTableSize, i)) {
+                tableFound = false;
                 break;
               }
             }
+          }
+          if (tableFound)//Forward backward and right on time, this table is perfect for the search
+          {
+            tableFoundNum = i;
+            break;
           }
         }
       }
@@ -172,11 +214,18 @@ export class WmhMainComponent implements OnInit {
         break;
       }
       lookingResTime = new Date(lookingResTime.getTime() + 15*60000);//Check for 15 minutes later
+      //Make sure that time is within operation hours
+      if (!this.isWithinWorkingHours(lookingResTime))
+      {
+        this.withinWorkingHours = false;
+        return false;
+      }
+
     }
     this.bookedTable = tableFoundNum;
     this.bookedDateTime = lookingResTime;
     this.bookedSize = bestTableSize;
-    
+    return true;
     
 
   }
@@ -188,6 +237,9 @@ export class WmhMainComponent implements OnInit {
       this.missingNameFlag = true;
     }
     this.missingNameFlag = false;
+    if (!this.searchByDateAndSize()){
+      return;
+    }
     this.localStorage.storeReservationOnLocalStorage(this.newRez.Name, this.bookedDateTime, this.newRez.PartySize, this.bookedSize, this.bookedTable, false);
     this.reservationList = this.localStorage.getReservationsFromLocalStorage();
     this.filterReservations();

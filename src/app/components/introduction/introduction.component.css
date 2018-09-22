@@ -114,3 +114,6 @@ https://codepen.io/yemon/pen/gLxdpY
 .mat-stepper-horizontal, .mat-stepper-vertical {
   background-color: #272B30;
 }
+.k-slider {
+  width: 100%;
+}

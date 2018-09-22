@@ -36,12 +36,20 @@
                     <tr>
                             <td><label for="openingLabel" class="">Open:</label></td>
                             <td><kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [(value)]="startTime"></kendo-timepicker><br /></td>
+                            <td style="text-align: center; width: 500px; padding-left: 20px;">Length of reserved block : 
+                                <em *ngIf="intervals === 12">3 Hours</em>
+                                <em *ngIf="12 > intervals && intervals >= 8">2 Hours</em>
+                                <em *ngIf="8 > intervals && intervals >= 4">1 Hour</em>
+                                <em *ngIf="(intervals % 4) >= 1"> {{(intervals % 4) * 15}} Minutes</em>
+                            </td>
                     </tr>
                     <tr>
                             <td><label for="closingLabel">Close:</label></td>
                             <td><kendo-timepicker [format]="'hh:mm a'" [steps]="steps" [(value)]="endTime"></kendo-timepicker></td>
+                            <td style="text-align: center; width: 500px; padding-left: 20px;"><kendo-slider [min]="1" [max]="12" [(value)]="intervals" ></kendo-slider></td>
                     </tr>
                 </table>
+                
             </div>
             <div>
                 <br/>

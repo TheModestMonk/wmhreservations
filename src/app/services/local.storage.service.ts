@@ -9,7 +9,7 @@ const RESERVATION_KEY = 'reservations';
 export class LocalStorageService {
     constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
     
-    public storeCompanyOnLocalStorage(companyName: string, companyHourOpen: Date, companyHourClose: Date, tableList: TableSet[]): void {
+    public storeCompanyOnLocalStorage(companyName: string, companyHourOpen: Date, companyHourClose: Date, tableList: TableSet[], intervals: number): void {
         //get from local storage
         let currentCompanyInfo = this.storage.get(STORAGE_KEY);
 
@@ -22,7 +22,8 @@ export class LocalStorageService {
             companyName: companyName,
             companyHourOpen: companyHourOpen,
             companyHourClose: companyHourClose,
-            tableList: tableList
+            tableList: tableList,
+            intervals : intervals
         });
         
         // to local storage

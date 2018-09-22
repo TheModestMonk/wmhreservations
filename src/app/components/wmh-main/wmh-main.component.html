@@ -87,21 +87,24 @@
         <kendo-numerictextbox [(ngModel)]="newRez.PartySize" [min]="0" [max]="companyMaxTableSize" format="n0" ></kendo-numerictextbox></kendo-textbox-container>&nbsp;
         <button type="button" class="btn btn-primary" (click)="searchByDateAndSize()" [disabled]="!newRez.ReservationTime || !newRez.PartySize">Search</button>
         <br />
-        <div *ngIf="bookedDateTime !== newRez.ReservationTime && !moreInfoFlag">
-          <div>We found you the next available table!</div>
+        <div *ngIf="bookedDateTime !== newRez.ReservationTime && !moreInfoFlag && withinWorkingHours">
+          <span>We found you the next available table!</span>
         </div>
         <div *ngIf="moreInfoFlag">
-          <div>*Please make sure you have a date, time, and party size selected.</div>
+          <span class="danger">*Please make sure you have a date, time, and party size selected.</span>
+        </div>
+        <div *ngIf="!withinWorkingHours">
+          <span class="danger">*Sorry but we no longer have tables of your party size for the rest of the day.</span>
         </div>
         <br />
-        <div *ngIf="bookedTable"> <strong>{{bookedDateTime | date:'shortTime'}}
+        <div *ngIf="bookedTable && withinWorkingHours"> <strong>{{bookedDateTime | date:'shortTime'}}
         <em>{{bookedDateTime | date:'fullDate'}}</em></strong>
-        <div *ngIf="missingNameFlag" class="warning">
-          *Please enter a name before booking
+        <div *ngIf="!newRez.Name || newRez.Name.length === 0">
+          <span class="danger">*Please enter a name before booking</span>
         </div>
         <br />
          <div>
-            <button type="button" class="btn btn-secondary" (click)="close()">No</button>
+            <button type="button" class="btn btn-secondary" (click)="close()">Cancel Booking</button>
             <button type="button" class="btn btn-primary" (click)="addReservation(); close();" 
             [disabled]="!newRez.Name || newRez.Name.length === 0 || !newRez.ReservationTime">
             Book it!</button>

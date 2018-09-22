@@ -12,6 +12,7 @@ export class IntroductionComponent implements OnInit {
   steps: any = { hour: 1, minute: 15 };
   startTime: Date = new Date(2000, 2, 10, 8, 0, 0);
   endTime: Date = new Date(2000, 2, 10, 22, 30, 0);
+  intervals: number = 4;
   companyName: string = '';
   tableList: TableSet[] = [];
   isLinear = true;
@@ -57,7 +58,7 @@ export class IntroductionComponent implements OnInit {
     }
   }
   storeToLocalStorage(){
-    this.localStorage.storeCompanyOnLocalStorage(this.companyName, this.startTime, this.endTime, this.tableList);
+    this.localStorage.storeCompanyOnLocalStorage(this.companyName, this.startTime, this.endTime, this.tableList, this.intervals);
     this.router.navigate(['WmhMain']);
   }
 
