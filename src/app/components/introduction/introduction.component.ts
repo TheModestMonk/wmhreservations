@@ -48,6 +48,11 @@ export class IntroductionComponent implements OnInit {
       });
       if (!alreadyExists){
         this.tableList.push(new TableSet(maxCapacity, qty));
+        let sortedRes: TableSet[] = this.tableList.sort(
+          function(a, b) {
+              return  a.MaxCapacity - b.MaxCapacity;
+            });
+        this.tableList = sortedRes;
       }
     }
   }
